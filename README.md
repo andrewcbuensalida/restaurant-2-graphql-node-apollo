@@ -167,7 +167,8 @@ Variables:
 ## To setup Github Actions to run tests when creating a pull request
 - create .github/workflows/ci.yml
 - In github > repo > settings > rulesets
-  - 
+  - Check require status check to pass
+  - Create a check with the same name as myBuild in ci.yml
 
 
 ## TODO
