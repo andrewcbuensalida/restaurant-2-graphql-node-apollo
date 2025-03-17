@@ -1,32 +1,19 @@
 import { IResolvers } from "@graphql-tools/utils";
-import { IMenuItem, IMenuCategory } from "../../db"; // Adjust the import path as needed
-import { v4 } from "uuid";
 
 export const Mutation: IResolvers = {
 	addMenuItem: (parent, args, context) => {
-		const { menuItems } = context;
-		const newItem = {
-			...args.input,
-			id: v4(),
-		};
-		menuItems.push(newItem);
-		return newItem;
+		const { inMemoryDb } = context;
+		const { input } = args;
+		return inMemoryDb.addMenuItem(input);
 	},
 	updateMenuItem: (parent, args, context) => {
-		const { menuItems } = context;
+		const { inMemoryDb } = context;
 		const { id, input } = args;
-		const index = menuItems.findIndex((item: IMenuItem) => item.id === id);
-		if (index === -1) return null;
-		const updatedItem = { ...menuItems[index], ...input };
-		menuItems[index] = updatedItem;
-		return updatedItem;
+		return inMemoryDb.updateMenuItem(id, input);
 	},
 	deleteMenuItem: (parent, args, context) => {
-		const { menuItems } = context;
+		const { inMemoryDb } = context;
 		const { id } = args;
-		const index = menuItems.findIndex((item: IMenuItem) => item.id === id);
-		if (index === -1) return null;
-		const deletedItem = menuItems.splice(index, 1);
-		return deletedItem[0];
+		return inMemoryDb.deleteMenuItem(id);
 	},
 };

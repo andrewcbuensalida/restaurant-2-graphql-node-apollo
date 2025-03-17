@@ -1,8 +1,9 @@
 import { ApolloServer } from "@apollo/server";
 import { describe, it, expect } from "@jest/globals";
-import { typeDefs } from "../../graphql/typeDefs";
-import { resolvers } from "../../graphql/resolvers";
-import { IContext } from "../../index";
+import { typeDefs } from "../../../graphql/typeDefs";
+import { resolvers } from "../../../graphql/resolvers";
+import { IContext } from "../../../index";
+import InMemoryDb from "../../../databases/inMemoryDb";
 
 describe("Query.ts", () => {
 	const menuCategories = [
@@ -35,6 +36,19 @@ describe("Query.ts", () => {
 		},
 	];
 
+	// Mock inMemoryDb data
+	const inMemoryDb = new InMemoryDb();
+	inMemoryDb.findAllMenuItems = jest.fn().mockReturnValue(menuItems);
+	inMemoryDb.findAllMenuCategories = jest
+		.fn()
+		.mockReturnValue(menuCategories);
+	inMemoryDb.findMenuItemById = jest.fn().mockImplementation((id) => {
+		return menuItems.find((item) => item.id === id);
+	});
+	inMemoryDb.findMenuCategoryById = jest.fn().mockImplementation((id) => {
+		return menuCategories.find((category) => category.id === id);
+	});
+
 	const token = "test-token";
 
 	const testServer = new ApolloServer<IContext>({
@@ -59,8 +73,7 @@ describe("Query.ts", () => {
 			},
 			{
 				contextValue: {
-					menuItems,
-					menuCategories,
+					inMemoryDb,
 					token,
 				},
 			}
@@ -89,8 +102,7 @@ describe("Query.ts", () => {
 			},
 			{
 				contextValue: {
-					menuItems,
-					menuCategories,
+					inMemoryDb,
 					token,
 				},
 			}
@@ -119,8 +131,7 @@ describe("Query.ts", () => {
 			},
 			{
 				contextValue: {
-					menuItems,
-					menuCategories,
+					inMemoryDb,
 					token,
 				},
 			}
@@ -145,8 +156,7 @@ describe("Query.ts", () => {
 			},
 			{
 				contextValue: {
-					menuItems,
-					menuCategories,
+					inMemoryDb,
 					token,
 				},
 			}

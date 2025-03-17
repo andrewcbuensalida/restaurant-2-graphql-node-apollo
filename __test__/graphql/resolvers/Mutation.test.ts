@@ -1,8 +1,9 @@
 import { ApolloServer } from "@apollo/server";
 import { describe, it, expect } from "@jest/globals";
-import { typeDefs } from "../../graphql/typeDefs";
-import { resolvers } from "../../graphql/resolvers";
-import { IContext } from "../../index";
+import { typeDefs } from "../../../graphql/typeDefs";
+import { resolvers } from "../../../graphql/resolvers";
+import { IContext } from "../../../index";
+import InMemoryDb from "../../../databases/inMemoryDb";
 
 describe("Mutation.ts", () => {
 	const menuCategories = [
@@ -35,6 +36,26 @@ describe("Mutation.ts", () => {
 		},
 	];
 
+	// Mock inMemoryDb data
+	const inMemoryDb = new InMemoryDb();
+	inMemoryDb.addMenuItem = jest.fn().mockImplementation((item) => {
+		const newItem = { ...item, id: String(menuItems.length + 1) };
+		menuItems.push(newItem);
+		return newItem;
+	});
+	inMemoryDb.updateMenuItem = jest.fn().mockImplementation((id, item) => {
+		const index = menuItems.findIndex((i) => i.id === id);
+		if (index === -1) return null;
+		menuItems[index] = { ...menuItems[index], ...item };
+		return menuItems[index];
+	});
+	inMemoryDb.deleteMenuItem = jest.fn().mockImplementation((id) => {
+		const index = menuItems.findIndex((i) => i.id === id);
+		if (index === -1) return null;
+		const deletedItem = menuItems.splice(index, 1)[0];
+		return deletedItem;
+	});
+
 	const token = "test-token";
 
 	const testServer = new ApolloServer<IContext>({
@@ -66,8 +87,7 @@ describe("Mutation.ts", () => {
 			},
 			{
 				contextValue: {
-					menuItems,
-					menuCategories,
+					inMemoryDb,
 					token,
 				},
 			}
@@ -111,8 +131,7 @@ describe("Mutation.ts", () => {
 			},
 			{
 				contextValue: {
-					menuItems,
-					menuCategories,
+					inMemoryDb,
 					token,
 				},
 			}
@@ -157,8 +176,7 @@ describe("Mutation.ts", () => {
 			},
 			{
 				contextValue: {
-					menuItems,
-					menuCategories,
+					inMemoryDb,
 					token,
 				},
 			}
@@ -189,8 +207,7 @@ describe("Mutation.ts", () => {
 			},
 			{
 				contextValue: {
-					menuItems,
-					menuCategories,
+					inMemoryDb,
 					token,
 				},
 			}
@@ -220,8 +237,7 @@ describe("Mutation.ts", () => {
 			},
 			{
 				contextValue: {
-					menuItems,
-					menuCategories,
+					inMemoryDb,
 					token,
 				},
 			}
