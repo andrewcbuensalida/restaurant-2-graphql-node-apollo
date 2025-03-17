@@ -2,12 +2,9 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { menuItems, menuCategories, IMenuItem, IMenuCategory } from "./db";
 import { typeDefs } from "./graphql/typeDefs";
-import { Mutation } from "./graphql/resolvers/Mutation";
-import { Query } from "./graphql/resolvers/Query";
-import { MenuItem } from "./graphql/resolvers/MenuItem";
-import { MenuCategory } from "./graphql/resolvers/MenuCategory";
+import { resolvers } from "./graphql/resolvers";
 
-interface IContext {
+export interface IContext {
 	token: string;
 	menuItems: IMenuItem[];
 	menuCategories: IMenuCategory[];
@@ -15,12 +12,7 @@ interface IContext {
 
 const server = new ApolloServer<IContext>({
 	typeDefs,
-	resolvers: {
-		Query,
-		Mutation,
-		MenuItem,
-		MenuCategory,
-	},
+	resolvers,
 });
 
 // You can use await in the root if the file type is mjs
