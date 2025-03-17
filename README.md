@@ -161,6 +161,9 @@ Variables:
 }
 ```
 
+## To create PR
+`gh pr create --base <branch to PR into>`
+
 
 ## TODO
 - add authentication
