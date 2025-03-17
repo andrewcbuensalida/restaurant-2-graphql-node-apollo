@@ -105,4 +105,57 @@ describe("Query.ts", () => {
 			},
 		});
 	});
+	it("should get menu categories", async () => {
+		const response: any = await testServer.executeOperation(
+			{
+				query: `
+      query Query {
+        menuCategories {
+          id
+          title
+        }
+      }
+      `,
+			},
+			{
+				contextValue: {
+					menuItems,
+					menuCategories,
+					token,
+				},
+			}
+		);
+
+		expect(response.body.singleResult.data).toEqual({
+			menuCategories,
+		});
+	});
+	it("should get a menu category by id", async () => {
+		const response: any = await testServer.executeOperation(
+			{
+				query: `
+      query Query($id: ID!) {
+        menuCategory(id: $id) {
+          id
+          title
+        }
+      }
+      `,
+				variables: { id: "1" },
+			},
+			{
+				contextValue: {
+					menuItems,
+					menuCategories,
+					token,
+				},
+			}
+		);
+		expect(response.body.singleResult.data).toEqual({
+			menuCategory: {
+				id: "1",
+				title: "Appetizers",
+			},
+		});
+	});
 });
