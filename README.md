@@ -164,6 +164,11 @@ Variables:
 ## To create PR
 `gh pr create --base <branch to PR into>`
 
+## To setup Github Actions to run tests when creating a pull request
+- create .github/workflows/ci.yml
+- In github > repo > settings > rulesets
+  - 
+
 
 ## TODO
 - add authentication
