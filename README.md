@@ -161,7 +161,10 @@ Variables:
 }
 ```
 
+## To create PR
+`gh pr create --base <branch to PR into>`
+
 
 ## TODO
 - add authentication
-- add automated unit tests
+- add automated unit tests.
