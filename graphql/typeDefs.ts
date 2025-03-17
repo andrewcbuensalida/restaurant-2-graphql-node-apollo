@@ -1,29 +1,39 @@
+// This defines what kind of queries and mutations we can make. ! is required. [] is an array. The values are the return types. () are arguments.
 export const typeDefs = `#graphql
-  type Listing {
+  type MenuItem {
     id: ID!
-    name: String!
-    height: String!
-    mass: String!
-    hair_color: String!
-    skin_color: String!
-    eye_color: String!
-    birth_year: String!
-    gender: String!
-    homeworld: String!
-    films: [String]!
-    species: [String]!
-    vehicles: [String]!
-    starships: [String]!
-    created: String!
-    edited: String!
-    url: String!
+    title: String!
+    ingredients: [String!]!
+    price: Float!
+    categoryId: ID!
+    menuCategory: MenuCategory!
   }
-
+  type MenuCategory {
+    id: ID!
+    title: String!
+    menuItems: [MenuItem!]!
+  }
   type Query {
-      people: [Listing!]!
+    menuItems: [MenuItem!]!
+    menuItem(id: ID!): MenuItem
+    menuCategories: [MenuCategory!]!
+    menuCategory(id: ID!): MenuCategory
   }
-
   type Mutation {
-      deletePerson(id: ID!): Listing!
+    addMenuItem(input: AddMenuItemInput!): MenuItem!
+    updateMenuItem(id: ID!, input: UpdateMenuItemInput!): MenuItem
+    deleteMenuItem(id: ID!): MenuItem
+  }
+  input AddMenuItemInput {
+    title: String!
+    ingredients: [String!]!
+    price: Float!
+    categoryId: ID!
+  }
+  input UpdateMenuItemInput {
+    title: String
+    ingredients: [String!]
+    price: Float
+    categoryId: ID
   }
 `;

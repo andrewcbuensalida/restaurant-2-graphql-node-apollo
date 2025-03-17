@@ -1,8 +1,8 @@
 # GraphQL TypeScript Server 
+Based on https://github.com/harblaith7/GraphQL-Crash-Course/tree/main and https://github.com/ahadb/graphql-typescript-node-starter
 
-A starter GraphQL Apollo Server & API in Node / Express with TypeScript. If you're new to GraphQL then clone the repo and start playing around with it instead of reading countless blog posts or books.
-
-This should be all you need to get started on creating your GraphQL API or port your existing REST API over to GraphQL - it is agnostic of a persistence layer, you can choose what technology serves you best and factor it in, but right now we're serving from memory (you never want to do this in production and will need a DB).
+A starter GraphQL Apollo Server & API in Node / Express with TypeScript. 
+Right now the restaurent menu dummy data is being served in-memory.
 
 ## Installation
 
@@ -14,57 +14,152 @@ npm run start
 
 `npm run build` for prod when you've added in your persistence, etc.
 
+## Data
+In db.ts, there is an array of menu categories like entrees, appetizers, soup and salads. Each menu category has an id and a title. There is also an array of menu items such as Kale Salad, Chick eggrolls, etc. Each menu item has a title, an array of ingredients, price, categoryId, id. Each menu category can have multiple menu items. 
+
 ## Getting Started 
 
-Fundamentally you have one query and one mutation, the first is to get a listing and second to delete a listing - you can go from there in whichever direction you choose. Note the TypeScript types in your interfaces and `gql` template strings.
+Start the server and head over to http://localhost:4001 and start querying via the graphical GUI. You can build your query/mutation clicking the plus buttons in the documentation section on the left side, or copy and paste the operations below.
 
-Start the server and head over to http://localhost:4000 and start querying via the graphical GUI:
-
+### To get all menu items
+Operation:
 ```bash
-query {
-  people {
+query Query {
+  menuItems {
     id
-    name
-    height
+    categoryId
+    ingredients
+    price
+    title
   }
 }
 ```
 
+### To get a menu item
+Operation:
 ```bash
-mutation {
-  deletePerson(id: "001") {
+query Query($menuItemId: ID!) {
+  menuItem(id: $menuItemId) {
+    categoryId
     id
-    name
-    height
+    ingredients
+    price
+    title
+  }
+}
+```
+Variables:
+```bash
+{
+  "menuItemId": "1"
+}
+```
+
+
+
+### To get all menu categories with their items
+Operation:
+```bash
+query Query {
+  menuCategories {
+    id
+    menuItems {
+      title
+    }
+    title
   }
 }
 ```
 
-Make sure to check your docs and schemas tab for type details etc.
 
-### Schema
+### To get a menu category with its items
+Operation:
+```bash
+query Query($menuCategoryId: ID!) {
+  menuCategory(id: $menuCategoryId) {
+    menuItems {
+      title
+    }
+    title
+  }
+}
+```
+Variables:
+```bash
+{
+  "menuCategoryId":"1"
+}
+```
 
-GraphQL schema is roughly modelled via the Star Wars API (SWAPI) so thanks to them. You can easily create your own 
-data model, extend or adjust it.
+### To add a menu item
+Operation:
+```bash
+mutation Mutation($input: AddMenuItemInput!) {
+  addMenuItem(input: $input) {
+    categoryId
+    id
+    ingredients
+    price
+    title
+  }
+}
+```
+Variables:
+```bash
+{
+  "input": {
+    "title": "adobo",
+    "categoryId": "2",
+    "ingredients":["chicken","soy sauce"],
+    "price": 11.11
+  }
+}
+```
 
-## Road Map
+### To delete a menu item
+Operation:
+```bash
+mutation Mutation($menuItemId: ID!) {
+  deleteMenuItem(id: $menuItemId) {
+    id
+    title
+  }
+}
+```
+Variables:
+```bash
+{
+  "menuItemId": "1"
+}
+```
 
-Perhaps in the future I can add:
+### To update a menu item
+Operation:
+```bash
+mutation Mutation($updateMenuItemId: ID!, $input: UpdateMenuItemInput!) {
+  updateMenuItem(id: $updateMenuItemId, input: $input) {
+    categoryId
+    id
+    ingredients
+    price
+    title
+  }
+}
+```
+Variables:
+```bash
+{
+  "updateMenuItemId": "2",
+  "input": {
+    "categoryId":3,
+    "ingredients":["jelly", "peanut butter","bread"],
+    "price":9.99,
+    "title":"pb and j sandwich"
+  }
+}
+```
 
-At a boilerplate level:
 
-- [ ] More extenisble and configurable tooling, settings and data model
-- [ ] Full fake server dependent on schema of your choice
-- [ ] Generate build setup for types and schemas 
-- [ ] Simple REST API (diff branch) so you can compare
-
-At a GraphQL server / API level:
-
-- [ ] Authentication / Authorization
-- [ ] Cookies, Logger
-- [ ] Registration
-- [ ] Login, Logout
-- [ ] Persistence: DB, Mongo, SQL, choice
-
-If you're interested you're welcome to contribute to this project - please send a pull request.
-
+## TODO
+- add authentication
+- add automated unit tests
