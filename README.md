@@ -164,7 +164,7 @@ Variables:
 ## To create PR
 `gh pr create --base <branch to PR into>`
 
-## To setup Github Actions to run tests when creating a pull request
+## To setup Github Actions to require passing tests before merging a pull request
 - create .github/workflows/ci.yml
 - In github > repo > settings > rulesets
   - Check require status check to pass
