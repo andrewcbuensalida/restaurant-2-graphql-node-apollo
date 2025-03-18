@@ -1,4 +1,4 @@
-name: CI
+name: CI # name of the workflow
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  myBuild:
+  myBuild: # name of the status check in github
     runs-on: ubuntu-latest
 
     steps:
