@@ -1,7 +1,4 @@
-import InMemoryDb, {
-	IMenuItem,
-	IMenuCategory,
-} from "../../databases/inMemoryDb";
+import InMemoryDb, { IMenuItem } from "../../databases/inMemoryDb";
 
 describe("InMemoryDb", () => {
 	let db: InMemoryDb;

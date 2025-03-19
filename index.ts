@@ -1,9 +1,10 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import InMemoryDb, { IMenuCategory, IMenuItem } from "./databases/inMemoryDb";
-import { typeDefs } from "./graphql/typeDefs";
 import { resolvers } from "./graphql/resolvers";
+import { readFileSync } from 'fs';
 
+const typeDefs = readFileSync('./graphql/schema.graphql', { encoding: 'utf-8' });
 export interface IContext {
 	token: string;
 	inMemoryDb: InMemoryDb;
@@ -24,7 +25,7 @@ const startServer = async () => {
 
 			return { token, inMemoryDb: new InMemoryDb() };
 		},
-		listen: { port: 4001 }, // specify a different port here
+		listen: { port: 4002 }, // specify a different port here
 	});
 	console.log(`🚀 Server ready at ${url}`);
 };

@@ -21,7 +21,7 @@ In db.ts, there is an array of menu categories like entrees, appetizers, soup an
 
 ## Getting Started 
 
-Start the server and head over to http://localhost:4001 and start querying via the graphical GUI. You can build your query/mutation clicking the plus buttons in the documentation section on the left side, or copy and paste the operations below.
+Start the server and head over to http://localhost:4002 and start querying via the graphical GUI. You can build your query/mutation clicking the plus buttons in the documentation section on the left side, or copy and paste the operations below.
 
 ### To get all menu items
 Operation:
@@ -172,5 +172,11 @@ Variables:
 
 
 ## TODO
+- many orders to many menu items
 - add authentication
+- send metrics to graphOS https://www.apollographql.com/docs/apollo-server/monitoring/metrics
+- deploy to lambda or elastic beanstalk
+- super graph
+
+## DONE
 - add automated unit tests.
