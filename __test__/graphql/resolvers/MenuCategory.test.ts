@@ -1,10 +1,13 @@
 import { ApolloServer } from "@apollo/server";
 import { describe, it, expect } from "@jest/globals";
-import { typeDefs } from "../../../graphql/typeDefs";
 import { resolvers } from "../../../graphql/resolvers";
 import { IContext } from "../../../index";
 import InMemoryDb from "../../../databases/inMemoryDb";
+import { readFileSync } from "fs";
 
+const typeDefs = readFileSync("./graphql/schema.graphql", {
+	encoding: "utf-8",
+});
 describe("MenuCategory.ts", () => {
 	const menuCategories = [
 		{ id: "1", title: "Appetizers" },
