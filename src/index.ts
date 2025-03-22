@@ -1,35 +1,62 @@
 import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
-import InMemoryDb, { IMenuCategory, IMenuItem } from "./databases/inMemoryDb";
-import { resolvers } from "./graphql/resolvers";
 import { readFileSync } from "fs";
+import { resolvers } from "./graphql/resolvers/index";
+import InMemoryDb from "./databases/inMemoryDb";
+import express, { json } from "express";
+import cors from "cors";
+import gql from "graphql-tag";
+import { expressMiddleware } from "@apollo/server/express4";
+import { resolve } from "path";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import http from "http";
 
-const typeDefs = readFileSync("./src/schema.graphql", {
-	encoding: "utf-8",
-});
 export interface IContext {
 	token: string;
 	inMemoryDb: InMemoryDb;
 }
 
+const PORT = process.env.PORT || 5050;
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const typeDefs = gql(
+	readFileSync(resolve( "schema.graphql"), {
+		encoding: "utf-8",
+	})
+);
+
+// Our httpServer handles incoming requests to our Express app.
+// Below, we tell Apollo Server to "drain" this httpServer,
+// enabling our servers to shut down gracefully.
+const httpServer = http.createServer(app);
+
 const server = new ApolloServer<IContext>({
 	typeDefs,
 	resolvers,
+	plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
-// You can use await in the root if the file type is mjs
 const startServer = async () => {
-	// This can also be an express version
-	const { url } = await startStandaloneServer<IContext>(server, {
-		// context function is called once for each request to the server.
-		context: async ({ req }) => {
-			const token = req.headers.authorization || "";
+  await server.start();
 
-			return { token, inMemoryDb: new InMemoryDb() };
-		},
-		listen: { port: 4003 }, // specify a different port here
-	});
-	console.log(`🚀 Server ready at ${url}`);
+  app.use(
+    "/",
+    cors<cors.CorsRequest>(),
+    json(),
+    expressMiddleware(server, {
+      context: async ({ req }) => ({
+        token: req.headers.authorization || "",
+        inMemoryDb: new InMemoryDb(),
+      }),
+    })
+  );
+
+  await new Promise<void>((resolve) =>
+    httpServer.listen({ port: PORT }, resolve)
+  );
+  console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
 };
 
 startServer();

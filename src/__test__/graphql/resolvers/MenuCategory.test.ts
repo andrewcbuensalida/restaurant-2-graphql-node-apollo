@@ -5,7 +5,7 @@ import { IContext } from "../../../index";
 import InMemoryDb from "../../../databases/inMemoryDb";
 import { readFileSync } from "fs";
 
-const typeDefs = readFileSync("./src/schema.graphql", {
+const typeDefs = readFileSync("schema.graphql", {
 	encoding: "utf-8",
 });
 describe("MenuCategory.ts", () => {
