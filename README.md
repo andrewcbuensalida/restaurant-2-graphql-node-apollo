@@ -21,7 +21,7 @@ In db.ts, there is an array of menu categories like entrees, appetizers, soup an
 
 ## Getting Started 
 
-Start the server and head over to http://localhost:4002 and start querying via the graphical GUI. You can build your query/mutation clicking the plus buttons in the documentation section on the left side, or copy and paste the operations below.
+Start the server and head over to http://localhost:5050/graphql and start querying via the graphical GUI. You can build your query/mutation clicking the plus buttons in the documentation section on the left side, or copy and paste the operations below.
 
 ### To get all menu items
 Operation:
