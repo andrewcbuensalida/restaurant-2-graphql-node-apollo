@@ -5,10 +5,10 @@ import { IContext } from "../../../index";
 import InMemoryDb from "../../../databases/inMemoryDb";
 import { readFileSync } from "fs";
 
-const typeDefs = readFileSync("./graphql/schema.graphql", {
+const typeDefs = readFileSync("schema.graphql", {
 	encoding: "utf-8",
 });
-describe("MenuCategory.ts", () => {
+describe("MenuItem.ts", () => {
 	const menuCategories = [
 		{ id: "1", title: "Appetizers" },
 		{ id: "2", title: "Main Course" },
@@ -45,10 +45,12 @@ describe("MenuCategory.ts", () => {
 	inMemoryDb.findAllMenuCategories = jest
 		.fn()
 		.mockReturnValue(menuCategories);
-	inMemoryDb.findMenuItemsByCategoryId = jest
+	inMemoryDb.findMenuCategoryById = jest
 		.fn()
 		.mockImplementation((categoryId) => {
-			return menuItems.filter((item) => item.categoryId === categoryId);
+			return menuCategories.find(
+				(category) => category.id === categoryId
+			);
 		});
 
 	const token = "test-token";
@@ -58,20 +60,20 @@ describe("MenuCategory.ts", () => {
 		resolvers,
 	});
 
-	it("should include the menu items when getting the menu categories", async () => {
+	it("should include the menu category when getting the menu items", async () => {
 		const response: any = await testServer.executeOperation(
 			{
 				query: `
       query Query {
-        menuCategories {
+        menuItems {
           id
+          categoryId
+          ingredients
+          price
           title
-          menuItems {
+          menuCategory {
             id
             title
-            ingredients
-            price
-            categoryId
           }
         }
       }
@@ -86,45 +88,39 @@ describe("MenuCategory.ts", () => {
 		);
 
 		expect(response.body.singleResult.data).toEqual({
-			menuCategories: [
+			menuItems: [
 				{
 					id: "1",
-					title: "Appetizers",
-					menuItems: [
-						{
-							id: "1",
-							title: "Spring Rolls",
-							ingredients: ["Cabbage", "Carrot"],
-							price: 5.99,
-							categoryId: "1",
-						},
-					],
+					categoryId: "1",
+					ingredients: ["Cabbage", "Carrot"],
+					price: 5.99,
+					title: "Spring Rolls",
+					menuCategory: {
+						id: "1",
+						title: "Appetizers",
+					},
 				},
 				{
 					id: "2",
-					title: "Main Course",
-					menuItems: [
-						{
-							id: "2",
-							title: "Pad Thai",
-							ingredients: ["Rice Noodles", "Peanuts"],
-							price: 8.99,
-							categoryId: "2",
-						},
-					],
+					categoryId: "2",
+					ingredients: ["Rice Noodles", "Peanuts"],
+					price: 8.99,
+					title: "Pad Thai",
+					menuCategory: {
+						id: "2",
+						title: "Main Course",
+					},
 				},
 				{
 					id: "3",
-					title: "Desserts",
-					menuItems: [
-						{
-							id: "3",
-							title: "Cheesecake",
-							ingredients: ["Cheese", "Sugar"],
-							price: 6.99,
-							categoryId: "3",
-						},
-					],
+					categoryId: "3",
+					ingredients: ["Cheese", "Sugar"],
+					price: 6.99,
+					title: "Cheesecake",
+					menuCategory: {
+						id: "3",
+						title: "Desserts",
+					},
 				},
 			],
 		});
