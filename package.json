@@ -2,11 +2,11 @@
 	"name": "graphql-typescript-server",
 	"version": "0.1.0",
 	"description": "GraphQL / Apollo starter server in Node / Express & TypeScript",
-	"main": "index.ts",
+	"main": "src/index.ts",
 	"scripts": {
 		"test": "jest --watch",
 		"test:ci": "jest",
-		"start": "nodemon index.ts",
+		"start": "nodemon src/index.ts",
 		"build": "tsc -p ./"
 	},
 	"author": "Andrew Buensalida",
