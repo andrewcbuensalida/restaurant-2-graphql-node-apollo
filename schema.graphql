@@ -1,3 +1,6 @@
+"""
+A menu item
+"""
 type MenuItem {
 	id: ID!
 	title: String!
