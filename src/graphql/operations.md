@@ -1,4 +1,27 @@
-## To get Users using interfaces and inline fragments ...
+### To conditionally get emails and ids when getting users
+
+Operation:
+
+```bash
+query Users ($withEmail:Boolean=false, $withoutId: Boolean!=true){
+  users {
+    name
+    email @include(if: $withEmail)
+    id @skip(if: $withoutId)
+  }
+}
+```
+
+Variables:
+
+```bash
+{
+  "withEmail": true,
+  "withoutId": false
+}
+```
+
+### To get Users using interfaces and inline fragments ...
 
 Operation:
 

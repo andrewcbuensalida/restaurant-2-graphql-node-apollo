@@ -1,18 +1,18 @@
 ## TODO
-- many orders to many menu items
 - add authentication
 - send metrics to graphOS https://www.apollographql.com/docs/apollo-server/monitoring/metrics
 - deploy to lambda or elastic beanstalk
 - super graph
 - caching
 - custom scalar date https://www.apollographql.com/docs/apollo-server/schema/custom-scalars
-- make menu category an enum
-- implement an interface. type Customer implements interface User. type Employee implements interface User. Then use an inline fragment.
-- Implement union type. union SearchResult = Employee | Customer
-- Implement directive @deprecated, @skip
 
 
 ## DONE
+- make menu category and employee role an enum
+- implement an interface. type Customer implements interface User. type Employee implements interface User. Then use an inline fragment.
+- Implement union type. union SearchResult = Employee | Customer
+- Implement directive @deprecated, @skip
+- many orders to many menu items
 - implement fragment aka reusable fields, maybe comparing one menu category with another
 - add automated unit tests.
 
