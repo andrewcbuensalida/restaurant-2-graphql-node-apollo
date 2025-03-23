@@ -1,17 +1,42 @@
 import { v4 } from "uuid";
-
+export interface IMenuCategory {
+	id: string;
+	title: string;
+}
 export interface IMenuItem {
 	title: string;
 	ingredients: string[];
 	price: number;
 	categoryId: string;
-	id: string;
+	id?: string;
 }
 
-export interface IMenuCategory {
+export interface IOrder {
 	id: string;
-	title: string;
+	customerId: string;
+	createdAt: Date;
 }
+export interface IOrderItem {
+	id: string;
+	menuItemId: string;
+	orderId: string;
+	quantity: number;
+}
+
+export interface IUser {
+	id: string;
+	name: string;
+	email: string;
+}
+
+export interface ICustomer extends IUser {}
+
+export interface IEmployee extends IUser {
+	role: string;
+	salary: number;
+}
+
+export type SearchMenuResultType = IMenuItem | IMenuCategory;
 
 export default class InMemoryDb {
 	findAllMenuItems(): IMenuItem[] {
@@ -33,6 +58,51 @@ export default class InMemoryDb {
 	findMenuCategoryById(id: string): IMenuCategory | undefined {
 		return menuCategories.find((category) => category.id === id);
 	}
+
+	searchMenu(contains: string): SearchMenuResultType[] {
+		const results: SearchMenuResultType[] = [];
+		const lowerCaseContains = contains.toLowerCase();
+		results.push(
+			...menuItems.filter((item) =>
+				item.title.toLowerCase().includes(lowerCaseContains)
+			)
+		);
+		results.push(
+			...menuCategories.filter((category) =>
+				category.title.toLowerCase().includes(lowerCaseContains)
+			)
+		);
+		return results;
+	}
+
+	findAllOrders(): IOrder[] {
+		return orders;
+	}
+
+	findOrderById(id: string): IOrder | undefined {
+		return orders.find((order) => order.id === id);
+	}
+
+	findAllUsers(): IUser[] {
+		return [...customers, ...employees];
+	}
+
+	findUserById(id: string): IUser | undefined {
+		return [...customers, ...employees].find((user) => user.id === id);
+	}
+
+	findOrderItemsByMenuItemId(menuItemId: string): IOrderItem[] {
+		return orderItems.filter((item) => item.menuItemId === menuItemId);
+	}
+
+	findOrderItemsByOrderId(orderId: string): IOrderItem[] {
+		return orderItems.filter((item) => item.orderId === orderId);
+	}
+
+	findOrdersByCustomerId(customerId: string): IOrder[] {
+		return orders.filter((order) => order.customerId === customerId);
+	}
+
 	addMenuItem(menuItem: IMenuItem): IMenuItem {
 		const newItem = {
 			...menuItem,
@@ -49,12 +119,61 @@ export default class InMemoryDb {
 		return updatedItem;
 	}
 	deleteMenuItem(id: string): IMenuItem | undefined {
+    console.log(menuItems)
 		const index = menuItems.findIndex((item) => item.id === id);
 		if (index === -1) return undefined;
 		const deletedItem = menuItems.splice(index, 1);
 		return deletedItem[0];
 	}
 }
+
+const orders: IOrder[] = [
+	{ id: "1", customerId: "1", createdAt: new Date() },
+	{ id: "2", customerId: "2", createdAt: new Date() },
+	{ id: "3", customerId: "1", createdAt: new Date() },
+	{ id: "4", customerId: "2", createdAt: new Date() },
+];
+
+const customers: ICustomer[] = [
+	{
+		id: "1",
+		name: "John Doe",
+		email: "john@example.com",
+
+	},
+	{
+		id: "2",
+		name: "Jane Smith",
+		email: "jane@example.com",
+	},
+];
+
+const employees: IEmployee[] = [
+	{
+		id: "1",
+		name: "Alice Johnson",
+		email: "alice@example.com",
+		role: "Manager",
+		salary: 50000,
+	},
+	{
+		id: "2",
+		name: "Bob Brown",
+		email: "bob@example.com",
+		role: "Chef",
+		salary: 40000,
+	},
+];
+
+const orderItems: IOrderItem[] = [
+	{ id: "1", menuItemId: "1", orderId: "1", quantity: 1 },
+	{ id: "2", menuItemId: "2", orderId: "1", quantity: 2 },
+	{ id: "3", menuItemId: "3", orderId: "2", quantity: 1 },
+	{ id: "4", menuItemId: "4", orderId: "2", quantity: 10 },
+	{ id: "5", menuItemId: "5", orderId: "3", quantity: 100 },
+	{ id: "6", menuItemId: "6", orderId: "3", quantity: 1 },
+	{ id: "7", menuItemId: "7", orderId: "4", quantity: 1 },
+];
 
 const menuItems: IMenuItem[] = [
 	{

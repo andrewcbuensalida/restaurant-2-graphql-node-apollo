@@ -71,7 +71,6 @@ describe("MenuCategory.ts", () => {
             title
             ingredients
             price
-            categoryId
           }
         }
       }
@@ -96,7 +95,6 @@ describe("MenuCategory.ts", () => {
 							title: "Spring Rolls",
 							ingredients: ["Cabbage", "Carrot"],
 							price: 5.99,
-							categoryId: "1",
 						},
 					],
 				},
@@ -109,7 +107,6 @@ describe("MenuCategory.ts", () => {
 							title: "Pad Thai",
 							ingredients: ["Rice Noodles", "Peanuts"],
 							price: 8.99,
-							categoryId: "2",
 						},
 					],
 				},
@@ -122,7 +119,6 @@ describe("MenuCategory.ts", () => {
 							title: "Cheesecake",
 							ingredients: ["Cheese", "Sugar"],
 							price: 6.99,
-							categoryId: "3",
 						},
 					],
 				},

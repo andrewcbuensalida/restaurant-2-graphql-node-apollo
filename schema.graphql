@@ -1,33 +1,84 @@
-type MenuItem {
-	id: ID!
-	title: String!
-	ingredients: [String!]!
-	price: Float!
-	categoryId: ID!
-	menuCategory: MenuCategory!
-}
 type MenuCategory {
 	id: ID!
 	title: String!
 	menuItems: [MenuItem!]!
 }
+
+"""
+A menu item
+"""
+type MenuItem {
+	id: ID!
+	title: String!
+	ingredients: [String!]!
+	price: Float!
+	menuCategory: MenuCategory!
+	orderItems: [OrderItem!]!
+	categoryId: ID! @deprecated(reason: "Not needed") # So it will be crossed out in Apollo Studio
+}
+
+type Order {
+	id: ID!
+	customer: Customer!
+	createdAt: String!
+	orderItems: [OrderItem!]!
+}
+
+type OrderItem {
+	id: ID!
+	menuItem: MenuItem!
+	order: Order!
+	quantity: Int!
+}
+
+interface User {
+	id: ID!
+	name: String!
+	email: String!
+}
+
+type Customer implements User {
+	id: ID!
+	name: String!
+	email: String!
+	orders: [Order!]!
+}
+
+type Employee implements User {
+	id: ID!
+	name: String!
+	email: String!
+	role: String!
+	salary: Float!
+}
+
+union SearchMenuResult = MenuItem | MenuCategory
+
 type Query {
 	menuItems: [MenuItem!]!
 	menuItem(id: ID!): MenuItem
 	menuCategories: [MenuCategory!]!
 	menuCategory(id: ID!): MenuCategory
+	searchMenu(contains: String): [SearchMenuResult!]
+	orders: [Order!]!
+	order(id: ID!): Order
+	users: [User!]!
+	user(id: ID!): User
 }
+
 type Mutation {
 	addMenuItem(input: AddMenuItemInput!): MenuItem!
 	updateMenuItem(id: ID!, input: UpdateMenuItemInput!): MenuItem
 	deleteMenuItem(id: ID!): MenuItem
 }
+
 input AddMenuItemInput {
 	title: String!
 	ingredients: [String!]!
 	price: Float!
 	categoryId: ID!
 }
+
 input UpdateMenuItemInput {
 	title: String
 	ingredients: [String!]

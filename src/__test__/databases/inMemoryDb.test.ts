@@ -57,7 +57,7 @@ describe("InMemoryDb", () => {
 		};
 		const addedItem = db.addMenuItem(newItem);
 		expect(addedItem.id).toBeDefined();
-		expect(db.findMenuItemById(addedItem.id)).toEqual(addedItem);
+		expect(db.findMenuItemById(addedItem.id as string)).toEqual(addedItem);
 	});
 
 	it("should update an existing menu item", () => {
