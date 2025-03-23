@@ -21,21 +21,18 @@ describe("Query.ts", () => {
 			title: "Spring Rolls",
 			ingredients: ["Cabbage", "Carrot"],
 			price: 5.99,
-			categoryId: "1",
 		},
 		{
 			id: "2",
 			title: "Pad Thai",
 			ingredients: ["Rice Noodles", "Peanuts"],
 			price: 8.99,
-			categoryId: "2",
 		},
 		{
 			id: "3",
 			title: "Cheesecake",
 			ingredients: ["Cheese", "Sugar"],
 			price: 6.99,
-			categoryId: "3",
 		},
 	];
 
@@ -66,7 +63,6 @@ describe("Query.ts", () => {
       query Query {
         menuItems {
           id
-          categoryId
           ingredients
           price
           title
@@ -81,7 +77,6 @@ describe("Query.ts", () => {
 				},
 			}
 		);
-
 		expect(response.body.singleResult.data).toEqual({
 			menuItems,
 		});
@@ -94,7 +89,6 @@ describe("Query.ts", () => {
       query Query($id: ID!) {
         menuItem(id: $id) {
           id
-          categoryId
           ingredients
           price
           title
@@ -113,7 +107,6 @@ describe("Query.ts", () => {
 		expect(response.body.singleResult.data).toEqual({
 			menuItem: {
 				id: "1",
-				categoryId: "1",
 				ingredients: ["Cabbage", "Carrot"],
 				price: 5.99,
 				title: "Spring Rolls",

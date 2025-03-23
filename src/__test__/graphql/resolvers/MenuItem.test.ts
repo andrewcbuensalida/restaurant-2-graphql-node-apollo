@@ -67,7 +67,6 @@ describe("MenuItem.ts", () => {
       query Query {
         menuItems {
           id
-          categoryId
           ingredients
           price
           title
@@ -91,7 +90,6 @@ describe("MenuItem.ts", () => {
 			menuItems: [
 				{
 					id: "1",
-					categoryId: "1",
 					ingredients: ["Cabbage", "Carrot"],
 					price: 5.99,
 					title: "Spring Rolls",
@@ -102,7 +100,6 @@ describe("MenuItem.ts", () => {
 				},
 				{
 					id: "2",
-					categoryId: "2",
 					ingredients: ["Rice Noodles", "Peanuts"],
 					price: 8.99,
 					title: "Pad Thai",
@@ -113,7 +110,6 @@ describe("MenuItem.ts", () => {
 				},
 				{
 					id: "3",
-					categoryId: "3",
 					ingredients: ["Cheese", "Sugar"],
 					price: 6.99,
 					title: "Cheesecake",

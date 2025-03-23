@@ -1,5 +1,29 @@
-### To compare two menu categories
+## To get Users using interfaces and inline fragments ...
+
 Operation:
+
+```bash
+query Query {
+  users {
+    __typename
+    name
+    ... on Employee {
+      salary
+    }
+    ... on Customer {
+     orders {
+      id
+     }
+    }
+  }
+}
+```
+
+### To compare two menu categories using fragment and aliases
+
+Operation:
+
+```bash
 query Query($id1:ID!, $id2:ID!){
   leftMenuCategory: menuCategory(id: $id1){
     ...fields
@@ -16,17 +40,46 @@ fragment fields on MenuCategory{
     price
   }
 }
+```
 
+```bash
 Variables:
 {
   "id1": "1",
   "id2": "2"
 }
+```
 
+### To search for menu items or menu categories using union and inline fragments
 
+Operation:
+
+```bash
+query Query($queryString: String!){
+  searchMenu(contains: $queryString){
+    __typename
+    ... on MenuCategory{
+      title
+    }
+    ... on MenuItem{
+      title
+      price
+    }
+  }
+}
+```
+
+```bash
+Variables:
+{
+  "queryString":"salad"
+}
+```
 
 ### To get all menu items
+
 Operation:
+
 ```bash
 query Query {
   menuItems {
@@ -40,7 +93,9 @@ query Query {
 ```
 
 ### To get a menu item
+
 Operation:
+
 ```bash
 query Query($menuItemId: ID!) {
   menuItem(id: $menuItemId) {
@@ -52,17 +107,19 @@ query Query($menuItemId: ID!) {
   }
 }
 ```
+
 Variables:
+
 ```bash
 {
   "menuItemId": "1"
 }
 ```
 
-
-
 ### To get all menu categories with their items
+
 Operation:
+
 ```bash
 query Query {
   menuCategories {
@@ -75,9 +132,10 @@ query Query {
 }
 ```
 
-
 ### To get a menu category with its items
+
 Operation:
+
 ```bash
 query Query($menuCategoryId: ID!) {
   menuCategory(id: $menuCategoryId) {
@@ -88,7 +146,9 @@ query Query($menuCategoryId: ID!) {
   }
 }
 ```
+
 Variables:
+
 ```bash
 {
   "menuCategoryId":"1"
@@ -96,7 +156,9 @@ Variables:
 ```
 
 ### To add a menu item
+
 Operation:
+
 ```bash
 mutation Mutation($input: AddMenuItemInput!) {
   addMenuItem(input: $input) {
@@ -108,7 +170,9 @@ mutation Mutation($input: AddMenuItemInput!) {
   }
 }
 ```
+
 Variables:
+
 ```bash
 {
   "input": {
@@ -121,7 +185,9 @@ Variables:
 ```
 
 ### To delete a menu item
+
 Operation:
+
 ```bash
 mutation Mutation($menuItemId: ID!) {
   deleteMenuItem(id: $menuItemId) {
@@ -130,7 +196,9 @@ mutation Mutation($menuItemId: ID!) {
   }
 }
 ```
+
 Variables:
+
 ```bash
 {
   "menuItemId": "1"
@@ -138,7 +206,9 @@ Variables:
 ```
 
 ### To update a menu item
+
 Operation:
+
 ```bash
 mutation Mutation($updateMenuItemId: ID!, $input: UpdateMenuItemInput!) {
   updateMenuItem(id: $updateMenuItemId, input: $input) {
@@ -150,7 +220,9 @@ mutation Mutation($updateMenuItemId: ID!, $input: UpdateMenuItemInput!) {
   }
 }
 ```
+
 Variables:
+
 ```bash
 {
   "updateMenuItemId": "2",

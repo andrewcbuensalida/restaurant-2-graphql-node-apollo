@@ -2,20 +2,23 @@ import { ApolloServer } from "@apollo/server";
 import { describe, it, expect } from "@jest/globals";
 import { resolvers } from "../../../graphql/resolvers";
 import { IContext } from "../../../index";
-import InMemoryDb from "../../../databases/inMemoryDb";
+import InMemoryDb, {
+	IMenuCategory,
+	IMenuItem,
+} from "../../../databases/inMemoryDb";
 import { readFileSync } from "fs";
 
 const typeDefs = readFileSync("schema.graphql", {
 	encoding: "utf-8",
 });
 describe("Mutation.ts", () => {
-	const menuCategories = [
+	const menuCategories: IMenuCategory[] = [
 		{ id: "1", title: "Appetizers" },
 		{ id: "2", title: "Main Course" },
 		{ id: "3", title: "Desserts" },
 	];
 
-	const menuItems = [
+	const menuItems: IMenuItem[] = [
 		{
 			id: "1",
 			title: "Spring Rolls",

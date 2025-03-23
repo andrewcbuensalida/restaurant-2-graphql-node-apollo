@@ -22,4 +22,27 @@ export const Query: IResolvers<any, IContext> = {
 		const { inMemoryDb } = context;
 		return inMemoryDb.findMenuCategoryById(id);
 	},
+	searchMenu: (parent, args, context) => {
+		const { contains } = args;
+		const { inMemoryDb } = context;
+		return inMemoryDb.searchMenu(contains);
+	},
+	orders: (parent, args, context) => {
+		const { inMemoryDb } = context;
+		return inMemoryDb.findAllOrders();
+	},
+	order: (parent, args, context) => {
+		const { id } = args;
+		const { inMemoryDb } = context;
+		return inMemoryDb.findOrderById(id);
+	},
+	users: (parent, args, context) => {
+		const { inMemoryDb } = context;
+		return inMemoryDb.findAllUsers();
+	},
+	user: (parent, args, context) => {
+		const { id } = args;
+		const { inMemoryDb } = context;
+		return inMemoryDb.findUserById(id);
+	},
 };
