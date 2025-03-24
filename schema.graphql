@@ -1,3 +1,6 @@
+# Custom scalar
+scalar Date
+
 enum EmployeeRoleEnum {
 	SERVER
 	CHEF
@@ -40,7 +43,7 @@ type MenuItem {
 type Order {
 	id: ID!
 	customer: Customer!
-	createdAt: String!
+	createdAt: Date!
 	orderItems: [OrderItem!]!
 }
 

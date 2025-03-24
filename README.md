@@ -4,10 +4,12 @@
 - deploy to lambda or elastic beanstalk
 - super graph
 - caching
-- custom scalar date https://www.apollographql.com/docs/apollo-server/schema/custom-scalars
+- websockets with subscriptions
+- fetch from third-party api
 
 
 ## DONE
+- custom scalar date https://www.apollographql.com/docs/apollo-server/schema/custom-scalars
 - make menu category and employee role an enum
 - implement an interface. type Customer implements interface User. type Employee implements interface User. Then use an inline fragment.
 - Implement union type. union SearchResult = Employee | Customer
