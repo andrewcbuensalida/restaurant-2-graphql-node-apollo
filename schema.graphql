@@ -1,6 +1,29 @@
+# Custom scalar
+scalar Date
+
+enum EmployeeRoleEnum {
+	SERVER
+	CHEF
+	MANAGER
+	OWNER
+}
+
+enum MenuCategoryTitleEnum {
+	APPETIZERS
+	ENTREES
+  DESSERTS
+	SANDWICHES
+	SOUP_SALAD_COMBOS
+	FAJITAS
+	TACOS
+	ENCHILADAS
+	QUICHE
+	GREEN_SALADS
+}
+
 type MenuCategory {
 	id: ID!
-	title: String!
+	title: MenuCategoryTitleEnum!
 	menuItems: [MenuItem!]!
 }
 
@@ -20,7 +43,7 @@ type MenuItem {
 type Order {
 	id: ID!
 	customer: Customer!
-	createdAt: String!
+	createdAt: Date!
 	orderItems: [OrderItem!]!
 }
 
@@ -48,7 +71,7 @@ type Employee implements User {
 	id: ID!
 	name: String!
 	email: String!
-	role: String!
+	role: EmployeeRoleEnum!
 	salary: Float!
 }
 

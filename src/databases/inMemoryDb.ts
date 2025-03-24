@@ -153,14 +153,14 @@ const employees: IEmployee[] = [
 		id: "1",
 		name: "Alice Johnson",
 		email: "alice@example.com",
-		role: "Manager",
+		role: "MANAGER",
 		salary: 50000,
 	},
 	{
 		id: "2",
 		name: "Bob Brown",
 		email: "bob@example.com",
-		role: "Chef",
+		role: "CHEF",
 		salary: 40000,
 	},
 ];

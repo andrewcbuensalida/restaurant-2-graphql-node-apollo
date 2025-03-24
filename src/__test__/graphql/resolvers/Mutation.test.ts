@@ -13,9 +13,9 @@ const typeDefs = readFileSync("schema.graphql", {
 });
 describe("Mutation.ts", () => {
 	const menuCategories: IMenuCategory[] = [
-		{ id: "1", title: "Appetizers" },
-		{ id: "2", title: "Main Course" },
-		{ id: "3", title: "Desserts" },
+		{ id: "1", title: "APPETIZERS" },
+		{ id: "2", title: "ENTREES" },
+		{ id: "3", title: "DESSERTS" },
 	];
 
 	const menuItems: IMenuItem[] = [
