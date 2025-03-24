@@ -9,10 +9,12 @@ import { expressMiddleware } from "@apollo/server/express4";
 import { resolve } from "path";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import http from "http";
+import { TheMealDb } from "./apis/theMealDb";
 
 export interface IContext {
 	token: string;
 	inMemoryDb: InMemoryDb;
+	theMealDb: TheMealDb;
 }
 
 const PORT = process.env.PORT || 5050;
@@ -22,7 +24,7 @@ app.use(cors());
 app.use(express.json());
 
 const typeDefs = gql(
-	readFileSync(resolve( "schema.graphql"), {
+	readFileSync(resolve("schema.graphql"), {
 		encoding: "utf-8",
 	})
 );
@@ -39,24 +41,25 @@ const server = new ApolloServer<IContext>({
 });
 
 const startServer = async () => {
-  await server.start();
+	await server.start();
 
-  app.use(
-    "/",
-    cors<cors.CorsRequest>(),
-    json(),
-    expressMiddleware(server, {
-      context: async ({ req }) => ({
-        token: req.headers.authorization || "",
-        inMemoryDb: new InMemoryDb(),
-      }),
-    })
-  );
+	app.use(
+		"/",
+		cors<cors.CorsRequest>(),
+		json(),
+		expressMiddleware(server, {
+			context: async ({ req }) => ({
+				token: req.headers.authorization || "",
+				inMemoryDb: new InMemoryDb(),
+				theMealDb: new TheMealDb({ cache: server.cache }),
+			}),
+		})
+	);
 
-  await new Promise<void>((resolve) =>
-    httpServer.listen({ port: PORT }, resolve)
-  );
-  console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
+	await new Promise<void>((resolve) =>
+		httpServer.listen({ port: PORT }, resolve)
+	);
+	console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
 };
 
 startServer();

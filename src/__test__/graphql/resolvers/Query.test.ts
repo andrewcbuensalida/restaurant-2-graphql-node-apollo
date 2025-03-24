@@ -4,6 +4,7 @@ import { resolvers } from "../../../graphql/resolvers";
 import { IContext } from "../../../index";
 import InMemoryDb from "../../../databases/inMemoryDb";
 import { readFileSync } from "fs";
+import { TheMealDb } from "../../../apis/theMealDb";
 
 const typeDefs = readFileSync("schema.graphql", {
 	encoding: "utf-8",
@@ -48,6 +49,12 @@ describe("Query.ts", () => {
 	inMemoryDb.findMenuCategoryById = jest.fn().mockImplementation((id) => {
 		return menuCategories.find((category) => category.id === id);
 	});
+	const theMealDb = new TheMealDb();
+	theMealDb.getRandomStrMealThumb = jest
+		.fn()
+		.mockReturnValue(
+			"https://www.themealdb.com/images/media/meals/xxxxx.jpg"
+		);
 
 	const token = "test-token";
 
@@ -60,20 +67,21 @@ describe("Query.ts", () => {
 		const response: any = await testServer.executeOperation(
 			{
 				query: `
-      query Query {
-        menuItems {
-          id
-          ingredients
-          price
-          title
-        }
-      }
-      `,
+  query Query {
+  menuItems {
+    id
+    ingredients
+    price
+    title
+  }
+  }
+  `,
 			},
 			{
 				contextValue: {
 					inMemoryDb,
 					token,
+					theMealDb,
 				},
 			}
 		);
@@ -86,21 +94,22 @@ describe("Query.ts", () => {
 		const response: any = await testServer.executeOperation(
 			{
 				query: `
-      query Query($id: ID!) {
-        menuItem(id: $id) {
-          id
-          ingredients
-          price
-          title
-        }
-      }
-      `,
+    query Query($id: ID!) {
+    menuItem(id: $id) {
+      id
+      ingredients
+      price
+      title
+    }
+    }
+    `,
 				variables: { id: "1" },
 			},
 			{
 				contextValue: {
 					inMemoryDb,
 					token,
+					theMealDb,
 				},
 			}
 		);
@@ -117,18 +126,19 @@ describe("Query.ts", () => {
 		const response: any = await testServer.executeOperation(
 			{
 				query: `
-      query Query {
-        menuCategories {
-          id
-          title
-        }
-      }
-      `,
+    query Query {
+    menuCategories {
+      id
+      title
+    }
+    }
+    `,
 			},
 			{
 				contextValue: {
 					inMemoryDb,
 					token,
+					theMealDb,
 				},
 			}
 		);
@@ -141,19 +151,20 @@ describe("Query.ts", () => {
 		const response: any = await testServer.executeOperation(
 			{
 				query: `
-      query Query($id: ID!) {
-        menuCategory(id: $id) {
-          id
-          title
-        }
-      }
-      `,
+    query Query($id: ID!) {
+    menuCategory(id: $id) {
+      id
+      title
+    }
+    }
+    `,
 				variables: { id: "1" },
 			},
 			{
 				contextValue: {
 					inMemoryDb,
 					token,
+					theMealDb,
 				},
 			}
 		);

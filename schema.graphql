@@ -38,6 +38,7 @@ type MenuItem {
 	menuCategory: MenuCategory!
 	orderItems: [OrderItem!]!
 	categoryId: ID! @deprecated(reason: "Not needed") # So it will be crossed out in Apollo Studio
+  strMealThumb: String # from theMealDB API
 }
 
 type Order {
