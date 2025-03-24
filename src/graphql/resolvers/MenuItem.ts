@@ -11,4 +11,8 @@ export const MenuItem: IResolvers<any, IContext> = {
 		const { inMemoryDb } = context;
 		return inMemoryDb.findOrderItemsByMenuItemId(parent.id);
 	},
+	strMealThumb: (parent, args, context) => {
+		const { theMealDb } = context;
+		return theMealDb.getRandomStrMealThumb();
+	},
 };

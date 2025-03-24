@@ -7,6 +7,7 @@ import InMemoryDb, {
 	IMenuItem,
 } from "../../../databases/inMemoryDb";
 import { readFileSync } from "fs";
+import { TheMealDb } from "../../../apis/theMealDb";
 
 const typeDefs = readFileSync("schema.graphql", {
 	encoding: "utf-8",
@@ -61,6 +62,12 @@ describe("Mutation.ts", () => {
 		const deletedItem = menuItems.splice(index, 1)[0];
 		return deletedItem;
 	});
+	const theMealDb = new TheMealDb();
+	theMealDb.getRandomStrMealThumb = jest
+		.fn()
+		.mockReturnValue(
+			"https://www.themealdb.com/images/media/meals/xxxxx.jpg"
+		);
 
 	const token = "test-token";
 
@@ -95,6 +102,7 @@ describe("Mutation.ts", () => {
 				contextValue: {
 					inMemoryDb,
 					token,
+					theMealDb,
 				},
 			}
 		);
@@ -139,6 +147,7 @@ describe("Mutation.ts", () => {
 				contextValue: {
 					inMemoryDb,
 					token,
+					theMealDb,
 				},
 			}
 		);
@@ -184,6 +193,7 @@ describe("Mutation.ts", () => {
 				contextValue: {
 					inMemoryDb,
 					token,
+					theMealDb,
 				},
 			}
 		);
@@ -215,6 +225,7 @@ describe("Mutation.ts", () => {
 				contextValue: {
 					inMemoryDb,
 					token,
+					theMealDb,
 				},
 			}
 		);
@@ -245,6 +256,7 @@ describe("Mutation.ts", () => {
 				contextValue: {
 					inMemoryDb,
 					token,
+					theMealDb,
 				},
 			}
 		);

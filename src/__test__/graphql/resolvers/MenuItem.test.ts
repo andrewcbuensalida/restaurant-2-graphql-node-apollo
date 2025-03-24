@@ -4,6 +4,7 @@ import { resolvers } from "../../../graphql/resolvers";
 import { IContext } from "../../../index";
 import InMemoryDb from "../../../databases/inMemoryDb";
 import { readFileSync } from "fs";
+import { TheMealDb } from "../../../apis/theMealDb";
 
 const typeDefs = readFileSync("schema.graphql", {
 	encoding: "utf-8",
@@ -52,6 +53,12 @@ describe("MenuItem.ts", () => {
 				(category) => category.id === categoryId
 			);
 		});
+  const theMealDb = new TheMealDb();
+  theMealDb.getRandomStrMealThumb = jest
+    .fn()
+    .mockReturnValue(
+      "https://www.themealdb.com/images/media/meals/xxxxx.jpg"
+    );
 
 	const token = "test-token";
 
@@ -82,6 +89,7 @@ describe("MenuItem.ts", () => {
 				contextValue: {
 					inMemoryDb,
 					token,
+          theMealDb
 				},
 			}
 		);
