@@ -63,6 +63,7 @@ describe("MenuCategory.ts", () => {
 		id: "1",
 		name: "testuser",
 		email: "test@gmail.com",
+    hashedPassword: "hashedPassword",
 	};
 
 	const testServer = new ApolloServer<IContext>({
@@ -93,6 +94,7 @@ describe("MenuCategory.ts", () => {
 					inMemoryDb,
 					user,
 					theMealDb,
+          JWT_SECRET: "JWT_SECRET",
 				},
 			}
 		);

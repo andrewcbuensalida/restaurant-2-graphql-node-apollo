@@ -60,6 +60,7 @@ describe("Query.ts", () => {
 		id: "1",
 		name: "testuser",
 		email: "test@gmail.com",
+		hashedPassword: "hashedPassword",
 	};
 
 	const testServer = new ApolloServer<IContext>({
@@ -86,6 +87,7 @@ describe("Query.ts", () => {
 					inMemoryDb,
 					user,
 					theMealDb,
+					JWT_SECRET: "JWT_SECRET",
 				},
 			}
 		);
@@ -114,6 +116,7 @@ describe("Query.ts", () => {
 					inMemoryDb,
 					user,
 					theMealDb,
+					JWT_SECRET: "JWT_SECRET",
 				},
 			}
 		);
@@ -143,6 +146,7 @@ describe("Query.ts", () => {
 					inMemoryDb,
 					user,
 					theMealDb,
+					JWT_SECRET: "JWT_SECRET",
 				},
 			}
 		);
@@ -169,6 +173,7 @@ describe("Query.ts", () => {
 					inMemoryDb,
 					user,
 					theMealDb,
+					JWT_SECRET: "JWT_SECRET",
 				},
 			}
 		);

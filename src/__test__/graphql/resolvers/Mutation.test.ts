@@ -77,6 +77,7 @@ describe("Mutation.ts", () => {
 		email: "test@gmail.com",
 		role: "MANAGER",
 		salary: 100000,
+		hashedPassword: "hashedPassword",
 	};
 
 	const testServer = new ApolloServer<IContext>({
@@ -111,6 +112,7 @@ describe("Mutation.ts", () => {
 					inMemoryDb,
 					user,
 					theMealDb,
+					JWT_SECRET: "JWT_SECRET",
 				},
 			}
 		);
@@ -156,6 +158,7 @@ describe("Mutation.ts", () => {
 					inMemoryDb,
 					user,
 					theMealDb,
+					JWT_SECRET: "JWT_SECRET",
 				},
 			}
 		);
@@ -202,6 +205,7 @@ describe("Mutation.ts", () => {
 					inMemoryDb,
 					user,
 					theMealDb,
+					JWT_SECRET: "JWT_SECRET",
 				},
 			}
 		);
@@ -234,6 +238,7 @@ describe("Mutation.ts", () => {
 					inMemoryDb,
 					user,
 					theMealDb,
+					JWT_SECRET: "JWT_SECRET",
 				},
 			}
 		);
@@ -265,6 +270,7 @@ describe("Mutation.ts", () => {
 					inMemoryDb,
 					user,
 					theMealDb,
+					JWT_SECRET: "JWT_SECRET",
 				},
 			}
 		);
