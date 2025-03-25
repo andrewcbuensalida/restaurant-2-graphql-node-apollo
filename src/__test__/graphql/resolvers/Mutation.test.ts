@@ -3,8 +3,10 @@ import { describe, it, expect } from "@jest/globals";
 import { resolvers } from "../../../graphql/resolvers";
 import { IContext } from "../../../index";
 import InMemoryDb, {
+	IEmployee,
 	IMenuCategory,
 	IMenuItem,
+	IUser,
 } from "../../../databases/inMemoryDb";
 import { readFileSync } from "fs";
 import { TheMealDb } from "../../../apis/theMealDb";
@@ -69,7 +71,14 @@ describe("Mutation.ts", () => {
 			"https://www.themealdb.com/images/media/meals/xxxxx.jpg"
 		);
 
-	const token = "test-token";
+	const user: IEmployee = {
+		id: "1",
+		name: "testuser",
+		email: "test@gmail.com",
+		isLoggedIn: true,
+		role: "MANAGER",
+		salary: 100000,
+	};
 
 	const testServer = new ApolloServer<IContext>({
 		typeDefs,
@@ -101,7 +110,7 @@ describe("Mutation.ts", () => {
 			{
 				contextValue: {
 					inMemoryDb,
-					token,
+					user,
 					theMealDb,
 				},
 			}
@@ -146,7 +155,7 @@ describe("Mutation.ts", () => {
 			{
 				contextValue: {
 					inMemoryDb,
-					token,
+					user,
 					theMealDb,
 				},
 			}
@@ -192,7 +201,7 @@ describe("Mutation.ts", () => {
 			{
 				contextValue: {
 					inMemoryDb,
-					token,
+					user,
 					theMealDb,
 				},
 			}
@@ -224,7 +233,7 @@ describe("Mutation.ts", () => {
 			{
 				contextValue: {
 					inMemoryDb,
-					token,
+					user,
 					theMealDb,
 				},
 			}
@@ -255,7 +264,7 @@ describe("Mutation.ts", () => {
 			{
 				contextValue: {
 					inMemoryDb,
-					token,
+					user,
 					theMealDb,
 				},
 			}

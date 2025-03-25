@@ -1,14 +1,15 @@
 ## TODO
-- add authentication
+- add jwt authentication
 - send metrics to graphOS https://www.apollographql.com/docs/apollo-server/monitoring/metrics
 - deploy to lambda or elastic beanstalk
 - super graph
-- caching
 - websockets with subscriptions
-- fetch from third-party api
+- caching user requests
 
 
 ## DONE
+- caching fetching from third-party api
+- fetch from third-party api
 - custom scalar date https://www.apollographql.com/docs/apollo-server/schema/custom-scalars
 - make menu category and employee role an enum
 - implement an interface. type Customer implements interface User. type Employee implements interface User. Then use an inline fragment.

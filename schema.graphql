@@ -59,6 +59,7 @@ interface User {
 	id: ID!
 	name: String!
 	email: String!
+  isLoggedIn: Boolean!
 }
 
 type Customer implements User {
@@ -66,6 +67,7 @@ type Customer implements User {
 	name: String!
 	email: String!
 	orders: [Order!]!
+  isLoggedIn: Boolean!
 }
 
 type Employee implements User {
@@ -74,6 +76,7 @@ type Employee implements User {
 	email: String!
 	role: EmployeeRoleEnum!
 	salary: Float!
+  isLoggedIn: Boolean!
 }
 
 union SearchMenuResult = MenuItem | MenuCategory
@@ -94,6 +97,13 @@ type Mutation {
 	addMenuItem(input: AddMenuItemInput!): MenuItem!
 	updateMenuItem(id: ID!, input: UpdateMenuItemInput!): MenuItem
 	deleteMenuItem(id: ID!): MenuItem
+  loginUser(input: LoginUserInput!): User
+  logoutUser: User
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
 }
 
 input AddMenuItemInput {
@@ -101,6 +111,7 @@ input AddMenuItemInput {
 	ingredients: [String!]!
 	price: Float!
 	categoryId: ID!
+  strMealThumb: String 
 }
 
 input UpdateMenuItemInput {
@@ -108,4 +119,5 @@ input UpdateMenuItemInput {
 	ingredients: [String!]
 	price: Float
 	categoryId: ID
+  strMealThumb: String
 }

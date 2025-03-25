@@ -27,6 +27,7 @@ export interface IUser {
 	id: string;
 	name: string;
 	email: string;
+	isLoggedIn: boolean;
 }
 
 export interface ICustomer extends IUser {}
@@ -119,11 +120,29 @@ export default class InMemoryDb {
 		return updatedItem;
 	}
 	deleteMenuItem(id: string): IMenuItem | undefined {
-    console.log(menuItems)
 		const index = menuItems.findIndex((item) => item.id === id);
 		if (index === -1) return undefined;
 		const deletedItem = menuItems.splice(index, 1);
 		return deletedItem[0];
+	}
+	loginUser(input: { email: string; password: string }): IUser | undefined {
+		const { email, password } = input;
+		const user = [...customers, ...employees].find(
+			(user) => user.email === email
+		);
+		if (user) {
+			user.isLoggedIn = true;
+			return user;
+		}
+		return undefined;
+	}
+	logoutUser(user: IUser): IUser | undefined {
+		if (user) {
+			// TODO should update the database
+			user.isLoggedIn = false;
+			return user;
+		}
+		return undefined;
 	}
 }
 
@@ -139,29 +158,32 @@ const customers: ICustomer[] = [
 		id: "1",
 		name: "John Doe",
 		email: "john@example.com",
-
+		isLoggedIn: false,
 	},
 	{
 		id: "2",
 		name: "Jane Smith",
 		email: "jane@example.com",
+		isLoggedIn: false,
 	},
 ];
 
 const employees: IEmployee[] = [
 	{
-		id: "1",
+		id: "3",
 		name: "Alice Johnson",
 		email: "alice@example.com",
 		role: "MANAGER",
 		salary: 50000,
+		isLoggedIn: false,
 	},
 	{
-		id: "2",
+		id: "4",
 		name: "Bob Brown",
 		email: "bob@example.com",
 		role: "CHEF",
 		salary: 40000,
+		isLoggedIn: false,
 	},
 ];
 
