@@ -1,6 +1,8 @@
 import { GraphQLError } from "graphql";
 import { combineResolvers, skip } from "graphql-resolvers";
-import InMemoryDb, { IUser } from "../../databases/inMemoryDb";
+import { IUser } from "../../databases/inMemoryDb";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 export const isAuthenticated = (parent: any, args: any, { user }: any) =>
 	user
@@ -20,23 +22,37 @@ export const isManager = combineResolvers(
 			: new GraphQLError("Not authorized as manager.")
 );
 
-export function getUserFromToken(token: string | undefined): IUser | null {
-	// This is a mock implementation. Replace with actual logic to get user from token.
-	if (!token) {
+export function getUserFromToken(
+	token: string | undefined,
+	JWT_SECRET: string | undefined
+): IUser | null {
+	if (!token) return null;
+
+	try {
+		const user = jwt.verify(token, JWT_SECRET || "") as IUser;
+		return user;
+	} catch (err) {
 		return null;
 	}
+}
 
-	const inMemoryDb = new InMemoryDb();
-	const user = inMemoryDb.findUserById(token); // TODO for now just use the token as the user id, but this should be replaced with actual JWT validation logic
+export const createToken = async (
+	user: any,
+	JWT_SECRET: any,
+	expiresIn: any
+): Promise<string> => {
+	return jwt.sign(user, JWT_SECRET, {
+		expiresIn,
+	});
+};
 
-	if (!user) {
-		throw new GraphQLError("Invalid token.", {
-			extensions: {
-				code: "UNAUTHENTICATED",
-				http: { status: 401 },
-			},
-		});
-	}
+export function hashPassword(password: string): string {
+	return bcrypt.hashSync(password, 10);
+}
 
-	return user;
+export function comparePassword(
+	password: string,
+	hashedPassword: string
+): boolean {
+	return bcrypt.compareSync(password, hashedPassword);
 }

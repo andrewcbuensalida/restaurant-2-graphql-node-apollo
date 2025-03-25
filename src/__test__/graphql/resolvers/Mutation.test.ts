@@ -75,7 +75,6 @@ describe("Mutation.ts", () => {
 		id: "1",
 		name: "testuser",
 		email: "test@gmail.com",
-		isLoggedIn: true,
 		role: "MANAGER",
 		salary: 100000,
 	};

@@ -14,11 +14,13 @@ import { TheMealDb } from "./apis/theMealDb";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { WebSocketServer } from "ws";
 import { useServer } from "graphql-ws/use/ws";
+import "dotenv/config";
 
 export interface IContext {
 	user: IUser | null;
 	inMemoryDb: InMemoryDb;
 	theMealDb: TheMealDb;
+	JWT_SECRET: string | undefined;
 }
 
 const PORT = process.env.PORT || 5050;
@@ -79,12 +81,16 @@ const startServer = async () => {
 			context: async ({ req }) => {
 				const authHeader = req.headers["authorization"];
 				const token = authHeader && authHeader.split(" ")[1];
-				const user: IUser | null = getUserFromToken(token);
+				const user: IUser | null = getUserFromToken(
+					token,
+					process.env.JWT_SECRET
+				);
 
 				return {
 					inMemoryDb: new InMemoryDb(), // could pass user as an argument here so that the auth check is done in the db layer, or can create a custom directive.
 					theMealDb: new TheMealDb({ cache: server.cache }),
 					user,
+					JWT_SECRET: process.env.JWT_SECRET, // for jwt
 				};
 			},
 		})

@@ -64,7 +64,6 @@ describe("MenuItem.ts", () => {
 		id: "1",
 		name: "testuser",
 		email: "test@gmail.com",
-		isLoggedIn: true,
 	};
 
 	const testServer = new ApolloServer<IContext>({
