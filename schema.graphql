@@ -11,7 +11,7 @@ enum EmployeeRoleEnum {
 enum MenuCategoryTitleEnum {
 	APPETIZERS
 	ENTREES
-  DESSERTS
+	DESSERTS
 	SANDWICHES
 	SOUP_SALAD_COMBOS
 	FAJITAS
@@ -38,7 +38,7 @@ type MenuItem {
 	menuCategory: MenuCategory!
 	orderItems: [OrderItem!]!
 	categoryId: ID! @deprecated(reason: "Not needed") # So it will be crossed out in Apollo Studio
-  strMealThumb: String # from theMealDB API
+	strMealThumb: String # from theMealDB API
 }
 
 type Order {
@@ -93,7 +93,29 @@ type Query {
 type Mutation {
 	addMenuItem(input: AddMenuItemInput!): MenuItem!
 	updateMenuItem(id: ID!, input: UpdateMenuItemInput!): MenuItem
+	"""
+	Delete requires MANAGER role
+	"""
 	deleteMenuItem(id: ID!): MenuItem
+	loginUser(input: LoginUserInput!): Token!
+	createUser(input: CreateUserInput!): Token!
+}
+
+type Token {
+	token: String!
+}
+
+input CreateUserInput {
+	name: String
+	email: String!
+	password: String!
+	role: EmployeeRoleEnum
+	salary: Float
+}
+
+input LoginUserInput {
+	email: String!
+	password: String!
 }
 
 input AddMenuItemInput {
@@ -101,6 +123,7 @@ input AddMenuItemInput {
 	ingredients: [String!]!
 	price: Float!
 	categoryId: ID!
+	strMealThumb: String
 }
 
 input UpdateMenuItemInput {
@@ -108,4 +131,5 @@ input UpdateMenuItemInput {
 	ingredients: [String!]
 	price: Float
 	categoryId: ID
+	strMealThumb: String
 }

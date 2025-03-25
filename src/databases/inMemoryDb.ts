@@ -1,4 +1,6 @@
 import { v4 } from "uuid";
+import { hashPassword } from "../graphql/resolvers/Authorization";
+
 export interface IMenuCategory {
 	id: string;
 	title: string;
@@ -27,6 +29,7 @@ export interface IUser {
 	id: string;
 	name: string;
 	email: string;
+	hashedPassword: string;
 }
 
 export interface ICustomer extends IUser {}
@@ -91,6 +94,12 @@ export default class InMemoryDb {
 		return [...customers, ...employees].find((user) => user.id === id);
 	}
 
+	findUserByEmail(email: string): IUser | undefined {
+		return [...customers, ...employees].find(
+			(user) => user.email === email
+		);
+	}
+
 	findOrderItemsByMenuItemId(menuItemId: string): IOrderItem[] {
 		return orderItems.filter((item) => item.menuItemId === menuItemId);
 	}
@@ -119,11 +128,29 @@ export default class InMemoryDb {
 		return updatedItem;
 	}
 	deleteMenuItem(id: string): IMenuItem | undefined {
-    console.log(menuItems)
 		const index = menuItems.findIndex((item) => item.id === id);
 		if (index === -1) return undefined;
 		const deletedItem = menuItems.splice(index, 1);
 		return deletedItem[0];
+	}
+	createUser(input: any): IUser | undefined {
+		const { email, password } = input;
+		const user = [...customers, ...employees].find(
+			(user) => user.email === email
+		);
+		if (user) {
+			throw new Error("Email already exists");
+		}
+		const hashedPassword = hashPassword(password);
+		delete input.password;
+
+		const newUser = {
+			...input,
+			id: v4(),
+			hashedPassword,
+		};
+		customers.push(newUser);
+		return newUser;
 	}
 }
 
@@ -139,29 +166,32 @@ const customers: ICustomer[] = [
 		id: "1",
 		name: "John Doe",
 		email: "john@example.com",
-
+		hashedPassword: hashPassword("password1"),
 	},
 	{
 		id: "2",
 		name: "Jane Smith",
 		email: "jane@example.com",
+		hashedPassword: hashPassword("password2"),
 	},
 ];
 
 const employees: IEmployee[] = [
 	{
-		id: "1",
+		id: "3",
 		name: "Alice Johnson",
 		email: "alice@example.com",
 		role: "MANAGER",
 		salary: 50000,
+		hashedPassword: hashPassword("password3"),
 	},
 	{
-		id: "2",
+		id: "4",
 		name: "Bob Brown",
 		email: "bob@example.com",
 		role: "CHEF",
 		salary: 40000,
+		hashedPassword: hashPassword("password4"),
 	},
 ];
 

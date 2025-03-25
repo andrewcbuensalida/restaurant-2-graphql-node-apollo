@@ -2,7 +2,7 @@ import { ApolloServer } from "@apollo/server";
 import { describe, it, expect } from "@jest/globals";
 import { resolvers } from "../../../graphql/resolvers";
 import { IContext } from "../../../index";
-import InMemoryDb from "../../../databases/inMemoryDb";
+import InMemoryDb, { IUser } from "../../../databases/inMemoryDb";
 import { readFileSync } from "fs";
 import { TheMealDb } from "../../../apis/theMealDb";
 
@@ -56,7 +56,12 @@ describe("Query.ts", () => {
 			"https://www.themealdb.com/images/media/meals/xxxxx.jpg"
 		);
 
-	const token = "test-token";
+	const user: IUser = {
+		id: "1",
+		name: "testuser",
+		email: "test@gmail.com",
+		hashedPassword: "hashedPassword",
+	};
 
 	const testServer = new ApolloServer<IContext>({
 		typeDefs,
@@ -80,8 +85,9 @@ describe("Query.ts", () => {
 			{
 				contextValue: {
 					inMemoryDb,
-					token,
+					user,
 					theMealDb,
+					JWT_SECRET: "JWT_SECRET",
 				},
 			}
 		);
@@ -108,8 +114,9 @@ describe("Query.ts", () => {
 			{
 				contextValue: {
 					inMemoryDb,
-					token,
+					user,
 					theMealDb,
+					JWT_SECRET: "JWT_SECRET",
 				},
 			}
 		);
@@ -137,8 +144,9 @@ describe("Query.ts", () => {
 			{
 				contextValue: {
 					inMemoryDb,
-					token,
+					user,
 					theMealDb,
+					JWT_SECRET: "JWT_SECRET",
 				},
 			}
 		);
@@ -163,8 +171,9 @@ describe("Query.ts", () => {
 			{
 				contextValue: {
 					inMemoryDb,
-					token,
+					user,
 					theMealDb,
+					JWT_SECRET: "JWT_SECRET",
 				},
 			}
 		);
